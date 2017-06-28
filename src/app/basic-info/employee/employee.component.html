@@ -1,0 +1,140 @@
+<div *ngIf="employeeService.editMode==''">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> 員工明細
+        </div>
+        <div class="card-block">
+          <button type="button" class="btn btn-outline-primary"
+                (click)="employeeService.editMode='AddNew'">
+                  <i class="fa fa-plus-circle" aria-hidden="true"
+                  ></i>&nbsp; 新增</button>
+          <button type="button" class="btn btn-outline-danger"
+                (click)="showDeleteDialog()">
+                  <i class="fa fa-times" aria-hidden="true"
+                  ></i>&nbsp; 刪除</button>
+         <pre></pre>
+         <table class="table table-bordered table-striped table-condensed table-responsive">
+            <thead>
+              <tr>
+                <th>刪除</th>
+                <th>NO</th>
+                <th>中文</th>
+                <th>英文</th>
+                <th>電話</th>
+                <th>建立日期</th>
+
+                <th>修改日期</th>
+
+                <th>修改</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of employeeService.datas |async">
+                <td>
+                  <div class="checkbox">
+                    <input type="checkbox" id="chkDelete" name="Delete"
+                    value="{{item.userNo}}"
+                    [checked]="employeeService.cbChecked.indexOf(item.userNo) >= 0"
+                    (change)="employeeService.updateCheckedOptions(item.userNo, $event)"/>
+                  </div>
+                </td>
+                <td>{{item.userNo}}</td>
+                <td>{{item.userCnm}}</td>
+                <td>{{item.userEnm}}</td>
+                <td>{{item.phoneNum}}</td>
+                <td>{{item.createDate | date: 'yyyy/MM/dd HH:mm:ss'}}</td>
+
+                <td>{{item.lastDate | date: 'yyyy/MM/dd HH:mm:ss'}}</td>
+
+                <td><button type="button" class="btn btn-outline-primary"
+                (click)="employeeService.doSetcurrentData(item)">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"
+                  ></i>&nbsp; 修改</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Prev</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">4</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+<div class="row" *ngIf="employeeService.editMode!=''">
+<div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+          <strong>員工</strong>
+      </div>
+      <div class="card-block">
+        <div class="form-group row">
+          <label class="col-md-3 form-control-label">編號</label>
+          <div class="col-md-9">
+              <input type="text" id="inputUserNo" name="UserNo"
+              class="form-control" placeholder=""
+               [(ngModel)]="employeeService.currentData.userNo">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 form-control-label">中文姓名</label>
+          <div class="col-md-9">
+              <input type="text" id="inputUserCnm" name="UserCnm"
+              class="form-control" placeholder=""
+               [(ngModel)]="employeeService.currentData.userCnm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 form-control-label">英文姓名</label>
+          <div class="col-md-9">
+              <input type="text" id="inputUserEnm" name="UserEnm"
+              class="form-control" placeholder=""
+               [(ngModel)]="employeeService.currentData.userEnm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 form-control-label">手機門號</label>
+          <div class="col-md-9">
+              <input type="text" id="inputPhoneNum" name="PhoneNum"
+              class="form-control" placeholder="請輸入手機門號"
+               [(ngModel)]="employeeService.currentData.phoneNum">
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary"
+        *ngIf="employeeService.editMode=='AddNew'"
+              (click)="employeeService.doInsert()"
+        ><i class="fa fa-check"></i>&nbsp; 新增</button>
+
+        <button type="submit" class="btn btn-primary"
+        *ngIf="employeeService.editMode=='Edit'"
+              (click)="employeeService.doUpdate()"
+        ><i class="fa fa-check"></i>&nbsp; 儲存</button>
+
+        <button type="button" class="btn btn-secondary"
+          (click)="employeeService.doCancel()">
+          <i class="fa fa-ban"></i>&nbsp; 取消</button>
+      </div>
+    </div>
+  </div>
+</div>

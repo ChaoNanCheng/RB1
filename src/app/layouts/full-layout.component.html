@@ -1,0 +1,36 @@
+<app-header></app-header>
+<div class="app-body">
+  <div class="sidebar">
+    <nav class="sidebar-nav">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/dashboard']"><i class="icon-speedometer"></i> Dashboard </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">
+          Elements
+        </li>
+        <li class="nav-item nav-dropdown" routerLinkActive="open" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="fa fa-wpforms" aria-hidden="true"></i> 基本資料</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/basicInfo/employee']"><i class="fa fa-wpforms" aria-hidden="true"></i> 員工設定</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+      <app-breadcrumbs></app-breadcrumbs>
+    </ol>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.conainer-fluid -->
+  </main>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,6 @@
+{
+  "/RB": {
+    "target": "http://localhost:32001",
+    "secure": false
+  }
+}
