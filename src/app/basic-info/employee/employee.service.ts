@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild, ViewContainerRef } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { employeeAllData } from './employeeAllData'
 import 'rxjs/add/operator/map';
 import { ToastrService } from 'ngx-toastr';
+import { BlockUIService } from './../../common/blockUI/blockUI.service';
 
 @Injectable()
 export class EmployeeService {
@@ -16,7 +17,11 @@ export class EmployeeService {
   editMode:string='';   //記錄編輯模式為何？Edit:編輯中, AddNew:新增中,空字串為非作用中，初始值為''非作用中。
   cbChecked: string[];
 
-  constructor(private http: Http, private toastrService: ToastrService) {
+  constructor(private http: Http,
+              private toastrService: ToastrService,
+              private viewContainerRef: ViewContainerRef,
+              private blockUI: BlockUIService) {
+    this.blockUI.vRef= this.viewContainerRef;
     this.findAllUrl = 'RB/user/findAll';
     this.cbChecked = [];
     this.findAll();
@@ -59,20 +64,34 @@ export class EmployeeService {
     let url:string='RB/user/save';
     let headers = new Headers({'Content-Type':'application/json'});
     let options = new RequestOptions({headers:headers});
-    this.http.post(url,this.currentData, options)
-    .subscribe(
-      (value:Response)=>{
-        let res = value.json();
-        if (res.status) {
-          this.toastrService.success('更新完成！', '成功');
-          this.doDetailInit();
-        }
-      },
-      (error)=>{
-        this.error = error;
-        this.toastrService.error(error, '失敗');
-      }
-    );
+
+    const p1 = new Promise((resolve, reject) => {
+      resolve();
+    });
+    p1.then(() => {
+      this.blockUI.start();
+    }).then(() => {
+        this.http.post(url,this.currentData, options)
+
+        .subscribe(
+          (value:Response)=>{
+            let res = value.json();
+            if (res.status) {
+              this.toastrService.success('更新完成！', '成功');
+              this.doDetailInit();
+            }
+          },
+          (error)=>{
+            this.error = error;
+            this.toastrService.error(error, '失敗');
+            this.blockUI.stop();
+          },
+          () => {
+            console.log("the Update is completed")
+            this.blockUI.stop();
+          }
+        );
+    })
   }
 
   doDelete () {
@@ -81,7 +100,7 @@ export class EmployeeService {
      let headers = new Headers({'Content-Type':'application/json'});
      let options = new RequestOptions({headers:headers});
      this.http.post(url,this.cbChecked, options)
-    .subscribe(
+     .subscribe(
       (value:Response)=>{
          this.toastrService.success('刪除完成！', '成功');
         this.editMode = '';
@@ -91,7 +110,8 @@ export class EmployeeService {
         this.error = error;
         this.toastrService.error(error, '失敗');
       }
-    );
+     );
+
   }
 
   updateCheckedOptions(chBox, event) {
@@ -115,10 +135,12 @@ export class EmployeeService {
     let headers = new Headers({'Content-Type':'application/json'});
     let options = new RequestOptions({headers:headers});
     let jData:Observable<any>;
+    this.blockUI.start();
     this.datas=  this.http.post(url, options)
     .map(
       (value:Response)=>value.json()
     );
+    this.blockUI.stop();
   }
 
 }

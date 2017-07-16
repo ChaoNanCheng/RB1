@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,11 +21,11 @@ import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
-//Layouts
+// Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
-//Hearder
+// Hearder
 import { HeaderLayoutComponent } from './layouts/header-layout.componect';
-//Footer
+// Footer
 import { FooterLayoutComponent } from './layouts/footer-layout.component';
 // Confirm Modal
 import { ConfirmModalService } from './common/confirmmodal/confirmmodal.service';
@@ -32,7 +33,9 @@ import { ConfirmModalComponent } from './common/confirmmodal/confirmmodal.compon
 // Info Modal
 import { InfoModalService } from './common/infomodal/infomodal.service';
 import { InfoModalComponent } from './common/infomodal/infomodal.component';
-
+// Block UI
+import { BlockUIService } from './common/blockUI/blockUI.service';
+import { BlockUIComponent } from './common/blockUI/blockUI.component';
 
 @NgModule({
   imports: [
@@ -56,18 +59,21 @@ import { InfoModalComponent } from './common/infomodal/infomodal.component';
     HeaderLayoutComponent,
     FooterLayoutComponent,
     ConfirmModalComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    BlockUIComponent
   ],
   entryComponents: [
     ConfirmModalComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    BlockUIComponent
   ],
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },
     ConfirmModalService,
-    InfoModalService
+    InfoModalService,
+    BlockUIService
     ],
   bootstrap: [AppComponent]
 })

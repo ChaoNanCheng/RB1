@@ -6,36 +6,30 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {
+  // constructor( ) { }
 
-    }
-
-  public brandPrimary:string =  '#20a8d8';
-  public brandSuccess:string =  '#4dbd74';
-  public brandInfo:string =   '#63c2de';
-  public brandWarning:string =  '#f8cb00';
-  public brandDanger:string =   '#f86c6b';
-
-  public printConsole() {
-    console.log("print...");
-  }
+  public brandPrimary = '#20a8d8';
+  public brandSuccess = '#4dbd74';
+  public brandInfo = '#63c2de';
+  public brandWarning = '#f8cb00';
+  public brandDanger = '#f86c6b';
 
   // dropdown buttons
-  public status: { isopen: boolean } = { isopen: false };
-  public toggleDropdown($event:MouseEvent):void {
+  public status: { isopen } = { isopen: false };
+  public toggleDropdown($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
   }
 
-  //convert Hex to RGBA
-  public convertHex(hex:string,opacity:number){
-    hex = hex.replace('#','');
-    let r = parseInt(hex.substring(0,2), 16);
-    let g = parseInt(hex.substring(2,4), 16);
-    let b = parseInt(hex.substring(4,6), 16);
+  // convert Hex to RGBA
+  public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
 
-    let rgba = 'rgba('+r+','+g+','+b+','+opacity/100+')';
+    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
     return rgba;
   }
 
@@ -99,8 +93,8 @@ export class DashboardComponent implements OnInit {
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
-  public lineChart1Legend:boolean = false;
-  public lineChart1Type:string = 'line';
+  public lineChart1Legend = false;
+  public lineChart1Type = 'line';
 
   // lineChart2
   public lineChart2Data:Array<any> = [
@@ -154,8 +148,8 @@ export class DashboardComponent implements OnInit {
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
-  public lineChart2Legend:boolean = false;
-  public lineChart2Type:string = 'line';
+  public lineChart2Legend = false;
+  public lineChart2Type = 'line';
 
 
   // lineChart3
@@ -196,8 +190,8 @@ export class DashboardComponent implements OnInit {
       borderColor: 'rgba(255,255,255,.55)',
     }
   ];
-  public lineChart3Legend:boolean = false;
-  public lineChart3Type:string = 'line';
+  public lineChart3Legend = false;
+  public lineChart3Type = 'line';
 
 
   // barChart1
@@ -229,8 +223,8 @@ export class DashboardComponent implements OnInit {
       borderWidth: 0
     }
   ];
-  public barChart1Legend:boolean = false;
-  public barChart1Type:string = 'bar';
+  public barChart1Legend = false;
+  public barChart1Type = 'bar';
 
   // mainChart
 
@@ -238,12 +232,12 @@ export class DashboardComponent implements OnInit {
     return Math.floor(Math.random()*(max-min+1)+min);
   }
 
-  public mainChartElements:number = 27;
-  public mainChartData1:Array<number> = [];
-  public mainChartData2:Array<number> = [];
-  public mainChartData3:Array<number> = [];
+  public mainChartElements = 27;
+  public mainChartData1: Array<number> = [];
+  public mainChartData2: Array<number> = [];
+  public mainChartData3: Array<number> = [];
 
-  public mainChartData:Array<any> = [
+  public mainChartData: Array<any> = [
     {
       data: this.mainChartData1,
       label: 'Current'
@@ -257,8 +251,10 @@ export class DashboardComponent implements OnInit {
       label: 'BEP'
     }
   ];
-  public mainChartLabels:Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public mainChartOptions:any = {
+  /* tslint:disable:max-line-length */
+  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  /* tslint:enable:max-line-length */
+  public mainChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -315,8 +311,8 @@ export class DashboardComponent implements OnInit {
       borderDash: [8, 5]
     }
   ];
-  public mainChartLegend:boolean = false;
-  public mainChartType:string = 'line';
+  public mainChartLegend = false;
+  public mainChartType = 'line';
 
   // social box charts
 
@@ -372,15 +368,15 @@ export class DashboardComponent implements OnInit {
       display: false
     }
   };
-  public socialChartColours:Array<any> = [
+  public socialChartColours: Array<any> = [
     {
       backgroundColor: 'rgba(255,255,255,.1)',
       borderColor: 'rgba(255,255,255,.55)',
       pointHoverBackgroundColor: '#fff'
     }
   ];
-  public socialChartLegend:boolean = false;
-  public socialChartType:string = 'line';
+  public socialChartLegend = false;
+  public socialChartType = 'line';
 
   // sparkline charts
 
@@ -462,15 +458,15 @@ export class DashboardComponent implements OnInit {
   ];
 
 
-  public sparklineChartLegend:boolean = false;
-  public sparklineChartType:string = 'line';
+  public sparklineChartLegend = false;
+  public sparklineChartType = 'line';
 
 
   ngOnInit(): void {
-    //generate random values for mainChart
-    for (var i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50,200));
-      this.mainChartData2.push(this.random(80,100));
+    // generate random values for mainChart
+    for (let i = 0; i <= this.mainChartElements; i++) {
+      this.mainChartData1.push(this.random(50, 200));
+      this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
   }
