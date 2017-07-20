@@ -5,6 +5,7 @@ import { employeeAllData } from './employeeAllData'
 import 'rxjs/add/operator/map';
 import { ToastrService } from 'ngx-toastr';
 import { BlockUIService } from './../../common/blockUI/blockUI.service';
+import { paginate } from './../../common/paginate/paginate';
 
 @Injectable()
 export class EmployeeService {
@@ -16,6 +17,11 @@ export class EmployeeService {
   currentData:any={};   //被選取作用中的單筆資料
   editMode:string='';   //記錄編輯模式為何？Edit:編輯中, AddNew:新增中,空字串為非作用中，初始值為''非作用中。
   cbChecked: string[];
+  paginate: paginate; //分頁
+  pageNumArray:number[]=[];   //用以存放所有分頁的數字(3頁就會是1,2,3)
+  pageNumArrayMax:number=0;   //分頁數的陣列最大數
+  startPg:number=0;     //分頁陣列，開始的頁數
+  pageSize: number=5; //每頁筆數
 
   constructor(private http: Http,
               private toastrService: ToastrService,
@@ -24,6 +30,12 @@ export class EmployeeService {
     this.blockUI.vRef= this.viewContainerRef;
     this.findAllUrl = 'RB/user/findAll';
     this.cbChecked = [];
+    this.paginate = {
+        totalPages: 0,
+        size: 0,
+        totalElements: 0,
+        page: 0,
+      };
     this.findAll();
   }
 
@@ -51,12 +63,14 @@ export class EmployeeService {
       (value:Response)=>{
         this.toastrService.success('新增完成！', '成功');
         this.doDetailInit();
+        this.findAll();
       },
       (error)=>{
         this.error = error;
         this.toastrService.error(error, '失敗');
       }
     );
+
   }
 
   //修改
@@ -130,17 +144,54 @@ export class EmployeeService {
       .map((r: Response) => r.json());
   }*/
 
-  findAll() {
+  findAll(page: number=1) {
     let url:string=this.findAllUrl;
     let headers = new Headers({'Content-Type':'application/json'});
     let options = new RequestOptions({headers:headers});
+    page = page - 1;
+    let params = {page: page, size: Number(this.pageSize)};
     let jData:Observable<any>;
     this.blockUI.start();
-    this.datas=  this.http.post(url, options)
+    jData = this.http.post(url, params, options)
     .map(
       (value:Response)=>value.json()
     );
+    jData.subscribe((value)=>{
+      console.info(value);
+      this.datas = value.content;
+      this.paginate = {
+        totalPages: value.totalPages,
+        size: value.size,
+        totalElements: value.totalElements,
+        page: value.number,
+      };
+      console.info(this.paginate);
+      this.set_pageNumArray();
+    })
+
     this.blockUI.stop();
+  }
+
+  //  設定分頁控制項的陣列
+  set_pageNumArray(){
+      //初始劃分頁陣列
+        this.pageNumArray=[];
+        let i:number=0;
+
+        //計算起始頁
+        this.startPg = Math.floor((this.paginate.page+1)/10)*10+1;
+
+        if (this.startPg+10 > this.paginate.totalPages){
+          this.pageNumArrayMax = this.paginate.totalPages;
+        } else {
+          this.pageNumArrayMax = this.startPg + 10 -1;
+        }
+        for (i = this.startPg; i <= this.pageNumArrayMax; i++){
+            this.pageNumArray.push(i);
+        }
+        console.info(this.startPg);
+        console.info(this.pageNumArrayMax);
+        console.info(this.pageNumArray);
   }
 
 }

@@ -31,7 +31,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of employeeService.datas |async">
+              <tr *ngFor="let item of employeeService.datas">
                 <td>
                   <div class="checkbox">
                     <input type="checkbox" id="chkDelete" name="Delete"
@@ -57,20 +57,41 @@
           </table>
           <nav>
             <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Prev</a>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                (click)="employeeService.findAll(1)">第一頁</a>
               </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
+              <li *ngIf="(employeeService.startPg-10) >= 1" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                (click)="employeeService.findAll(employeeService.startPg-1)"
+                >...{{employeeService.startPg-1}}</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">2</a>
+              <li *ngFor="let pn of employeeService.pageNumArray"
+               [ngClass]="{'page-item active': pn == employeeService.paginate.page + 1,
+                           'page-item': pn != employeeService.paginate.page + 1}">
+                <a class="page-link" href="javascript:void(0)"
+                (click)="employeeService.findAll(pn)"
+                >{{pn}}</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">3</a>
+              <li *ngIf="employeeService.pageNumArrayMax < employeeService.paginate.totalPages" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                (click)="employeeService.findAll(employeeService.pageNumArrayMax+1)"
+                >{{employeeService.pageNumArrayMax+1}}...</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">4</a>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                (click)="employeeService.findAll(employeeService.paginate.totalPages)">最後一頁</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">Next</a>
-              </li>
+              每頁筆數：
+            <select name="sltPageSize" id="sltPageSize" [(ngModel)]="employeeService.pageSize"
+            (change)="employeeService.findAll(1)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
             </ul>
+
           </nav>
         </div>
       </div>
